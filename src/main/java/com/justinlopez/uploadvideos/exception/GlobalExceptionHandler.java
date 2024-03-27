@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({CreatorNotExistException.class})
+    @ExceptionHandler({CreatorNotExistException.class, VideoNotExistException.class})
     public ProblemDetail resourceNotFoundException(RuntimeException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
     }

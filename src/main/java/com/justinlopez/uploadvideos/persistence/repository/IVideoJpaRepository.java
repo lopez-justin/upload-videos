@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface IVideoJpaRepository extends JpaRepository<VideoEntity, Integer> {
 
-    Set<VideoEntity> findByPublished(Boolean published);
+    Set<VideoEntity> findAllByPublished(Boolean published);
 
     Set<VideoEntity> findAllByCreatorId(Integer idCreator);
 
