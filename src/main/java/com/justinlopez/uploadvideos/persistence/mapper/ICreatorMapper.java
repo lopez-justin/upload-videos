@@ -17,6 +17,7 @@ public interface ICreatorMapper {
 
     @Mapping(target = "follows", ignore = true)
     @Mapping(target = "likedVideos", ignore = true)
+    @Mapping(target = "videos", ignore = true)
     CreatorEntity toCreatorEntity(CreatorRequestDTO creatorRequestDTO);
 
     List<CreatorResponseDTO> toCreatorResponseDTOList(List<CreatorEntity> creatorEntityList);

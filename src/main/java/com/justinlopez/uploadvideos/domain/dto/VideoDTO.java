@@ -12,17 +12,15 @@ public class VideoDTO {
 
     private Integer id;
 
-    @NotNull
-    @Size(max = 255)
     private String url;
 
-    @NotNull
-    @Size(max = 255)
     private String title;
 
     private LocalDate date;
 
     private Boolean published;
+
+    private String cloudinaryId;
 
     CreatorResponseDTO creator;
 

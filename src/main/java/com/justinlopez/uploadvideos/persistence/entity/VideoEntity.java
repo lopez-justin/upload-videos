@@ -18,13 +18,9 @@ public class VideoEntity {
     @Column(name = "id_video", nullable = false)
     private Integer id;
 
-    @Size(max = 255)
-    @NotNull
     @Column(name = "url", nullable = false)
     private String url;
 
-    @Size(max = 255)
-    @NotNull
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -33,6 +29,9 @@ public class VideoEntity {
 
     @Column(name = "published")
     private Boolean published;
+
+    @Column(name = "cloudinary_id", nullable = false)
+    private String cloudinaryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_creator", nullable = false)

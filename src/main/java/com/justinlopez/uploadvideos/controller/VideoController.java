@@ -1,0 +1,62 @@
+package com.justinlopez.uploadvideos.controller;
+
+import com.justinlopez.uploadvideos.domain.dto.VideoDTO;
+import com.justinlopez.uploadvideos.domain.usecase.IVideoUseCase;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/videos")
+public class VideoController {
+
+    private final IVideoUseCase iVideoUseCase;
+
+    @PostMapping("/creator/{creatorId}")
+    public ResponseEntity<VideoDTO> createVideo(
+            @RequestBody VideoDTO videoDTO,
+            @PathVariable Integer creatorId)
+    {
+        return ResponseEntity.status(HttpStatus.CREATED).body(iVideoUseCase.createVideo(videoDTO, creatorId));
+    }
+
+    @PostMapping("/upload/{videoId}")
+    public ResponseEntity<VideoDTO> uploadVideo(
+            @RequestParam("file") MultipartFile file,
+            @PathVariable Integer videoId)
+    {
+        return ResponseEntity.status(HttpStatus.CREATED).body(iVideoUseCase.uploadVideo(file, videoId));
+    }
+
+    @PutMapping("/publish/{videoId}")
+    public ResponseEntity<Void> publishVideo(@PathVariable Integer videoId) {
+        iVideoUseCase.publishVideo(videoId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Iterable<VideoDTO>> getPublishedVideos() {
+        return ResponseEntity.status(HttpStatus.OK).body(iVideoUseCase.getAllPublishedVideos());
+    }
+
+    @GetMapping("/{videoId}")
+    public ResponseEntity<VideoDTO> getVideo(@PathVariable Integer videoId) {
+        return ResponseEntity.status(HttpStatus.OK).body(iVideoUseCase.getVideoById(videoId));
+    }
+
+    @GetMapping("/creator/{creatorId}")
+    public ResponseEntity<Iterable<VideoDTO>> getVideosByCreator(@PathVariable Integer creatorId) {
+        return ResponseEntity.status(HttpStatus.OK).body(iVideoUseCase.getAllVideosByCreatorId(creatorId));
+    }
+
+    @DeleteMapping("/{videoId}")
+    public ResponseEntity<Void> deleteVideo(@PathVariable Integer videoId) {
+        iVideoUseCase.deleteVideo(videoId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
+}

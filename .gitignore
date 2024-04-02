@@ -5,6 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 data
+resources/cloudinary.properties
 
 ### STS ###
 .apt_generated
