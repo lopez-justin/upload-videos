@@ -2,15 +2,20 @@ package com.justinlopez.uploadvideos.domain.service;
 
 import com.justinlopez.uploadvideos.domain.dto.CreatorRequestDTO;
 import com.justinlopez.uploadvideos.domain.dto.CreatorResponseDTO;
+import com.justinlopez.uploadvideos.domain.usecase.ICloudinaryService;
 import com.justinlopez.uploadvideos.domain.usecase.ICreatorUseCase;
 import com.justinlopez.uploadvideos.exception.CreatorNotExistException;
+import com.justinlopez.uploadvideos.exception.ImageUploadFailedException;
 import com.justinlopez.uploadvideos.persistence.entity.CreatorEntity;
 import com.justinlopez.uploadvideos.persistence.mapper.ICreatorMapper;
 import com.justinlopez.uploadvideos.persistence.repository.ICreatorJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -21,12 +26,34 @@ public class CreatorService implements ICreatorUseCase {
 
     private final ICreatorMapper iCreatorMapper;
 
+    private final ICloudinaryService iCloudinaryService;
+
     @Override
     public CreatorResponseDTO createCreator(CreatorRequestDTO creatorRequestDTO) {
         // Convert RequestDTO to Entity
         CreatorEntity creatorEntity = iCreatorMapper.toCreatorEntity(creatorRequestDTO);
         // Save Entity and return converted Entity to ResponseDTO
         return iCreatorMapper.toCreatorResponseDTO(iCreatorJpaRepository.save(creatorEntity));
+    }
+
+    @Override
+    public CreatorResponseDTO uploadCreatorImage(Integer creatorId, MultipartFile file) {
+        CreatorEntity creator = iCreatorJpaRepository.findById(creatorId)
+                .orElseThrow(() -> new CreatorNotExistException(creatorId.toString()));
+
+        Map result;
+        String imageUrl;
+
+        try {
+            result = iCloudinaryService.upload(file);
+            imageUrl = (String) result.get("url");
+        } catch (IOException e) {
+            throw new ImageUploadFailedException("Failed to upload image");
+        }
+
+        creator.setImage(imageUrl);
+
+        return iCreatorMapper.toCreatorResponseDTO(iCreatorJpaRepository.save(creator));
     }
 
     @Override

@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,7 +56,7 @@ public class VideoService implements IVideoUseCase {
         Map uploadResult = null;
         String videoUrl = null;
         try {
-            uploadResult = iCloudinaryService.uploadVideo(file);
+            uploadResult = iCloudinaryService.upload(file);
             videoUrl = (String) uploadResult.get("url");
         } catch (IOException e) {
             throw new VideoUploadFailedException("Failed to upload video");
@@ -79,7 +78,7 @@ public class VideoService implements IVideoUseCase {
 
     // delete video in cloudinary
     @Override
-    public boolean deleteVideo(Integer id) {
+    public Map deleteVideo(Integer id) {
         VideoEntity video = iVideoJpaRepository
                 .findById(id)
                 .orElseThrow(() -> new VideoNotExistException(id.toString()));
@@ -90,7 +89,7 @@ public class VideoService implements IVideoUseCase {
             Map result = iCloudinaryService.delete(publicId);
             log.error("Video deleted: {}", result);
             iVideoJpaRepository.delete(video);
-            return true;
+            return result;
         } catch (IOException e) {
             throw new VideoUploadFailedException("Failed to delete video");
         }

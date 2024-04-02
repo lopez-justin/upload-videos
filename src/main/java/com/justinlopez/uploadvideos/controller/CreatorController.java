@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,6 +24,14 @@ public class CreatorController {
     public ResponseEntity<CreatorResponseDTO> createCreator(@Valid @RequestBody CreatorRequestDTO creatorRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(iCreatorUseCase.createCreator(creatorRequestDTO));
     }
+
+    @PostMapping("/{creatorId}/upload")
+    public ResponseEntity<CreatorResponseDTO> uploadCreatorImage(
+            @PathVariable Integer creatorId,
+            @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(iCreatorUseCase.uploadCreatorImage(creatorId, file));
+    }
+
 
     @GetMapping
     public ResponseEntity<List<CreatorResponseDTO>> getAllCreators() {

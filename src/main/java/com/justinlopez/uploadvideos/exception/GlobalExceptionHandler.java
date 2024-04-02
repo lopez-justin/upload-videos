@@ -19,4 +19,10 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
+    @ExceptionHandler({ImageUploadFailedException.class, VideoUploadFailedException.class})
+    public ProblemDetail handleUploadFailedException(RuntimeException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+
+
 }

@@ -22,9 +22,9 @@ public class CloudinaryService implements ICloudinaryService {
     private final Cloudinary cloudinary;
 
     @Override
-    public Map uploadVideo(MultipartFile multipartFile) throws IOException {
+    public Map upload(MultipartFile multipartFile) throws IOException {
         File file = convert(multipartFile);
-        var result = cloudinary.uploader().upload(file, ObjectUtils.asMap("resource_type", "video"));
+        var result = cloudinary.uploader().upload(file, ObjectUtils.asMap("resource_type", "auto"));
         file.delete();
         return result;
     }

@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/videos")
@@ -53,9 +55,8 @@ public class VideoController {
     }
 
     @DeleteMapping("/{videoId}")
-    public ResponseEntity<Void> deleteVideo(@PathVariable Integer videoId) {
-        iVideoUseCase.deleteVideo(videoId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<Map> deleteVideo(@PathVariable Integer videoId) {
+        return ResponseEntity.status(HttpStatus.OK).body(iVideoUseCase.deleteVideo(videoId));
     }
 
 

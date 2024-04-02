@@ -3,6 +3,7 @@ package com.justinlopez.uploadvideos.domain.usecase;
 import com.justinlopez.uploadvideos.domain.dto.VideoDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
 import java.util.Set;
 
 public interface IVideoUseCase {
@@ -14,7 +15,7 @@ public interface IVideoUseCase {
 
     VideoDTO getVideoById(Integer id);
 
-    boolean deleteVideo(Integer id);
+    Map deleteVideo(Integer id);
 
     Set<VideoDTO> getAllPublishedVideos();
 
