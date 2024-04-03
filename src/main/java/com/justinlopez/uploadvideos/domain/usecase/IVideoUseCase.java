@@ -23,4 +23,6 @@ public interface IVideoUseCase {
 
     void publishVideo(Integer videoId);
 
+    void likeVideo(Integer creatorId, Integer videoId);
+
 }

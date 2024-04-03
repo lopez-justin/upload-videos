@@ -114,4 +114,27 @@ public class VideoService implements IVideoUseCase {
         iVideoJpaRepository.save(video);
     }
 
+    @Override
+    public void likeVideo(Integer creatorId, Integer videoId) {
+        VideoEntity video = iVideoJpaRepository
+                .findById(videoId)
+                .orElseThrow(() -> new VideoNotExistException(videoId.toString()));
+
+        CreatorEntity creator = iCreatorJpaRepository
+                .findById(creatorId)
+                .orElseThrow(() -> new CreatorNotExistException(creatorId.toString()));
+
+        Set<Integer> likes = creator.getLikedVideos();
+        boolean isLiked = likes.contains(videoId);
+
+        if (isLiked) {
+            likes.remove(videoId);
+        } else {
+            likes.add(videoId);
+        }
+        creator.setLikedVideos(likes);
+
+        iCreatorJpaRepository.save(creator);
+    }
+
 }

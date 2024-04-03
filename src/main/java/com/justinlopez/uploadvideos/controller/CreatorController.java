@@ -25,7 +25,7 @@ public class CreatorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(iCreatorUseCase.createCreator(creatorRequestDTO));
     }
 
-    @PostMapping("/{creatorId}/upload")
+    @PostMapping("/{creatorId}/upload-image")
     public ResponseEntity<CreatorResponseDTO> uploadCreatorImage(
             @PathVariable Integer creatorId,
             @RequestParam("file") MultipartFile file) {

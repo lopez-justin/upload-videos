@@ -25,7 +25,7 @@ public class VideoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(iVideoUseCase.createVideo(videoDTO, creatorId));
     }
 
-    @PostMapping("/upload/{videoId}")
+    @PostMapping("/{videoId}/upload-video")
     public ResponseEntity<VideoDTO> uploadVideo(
             @RequestParam("file") MultipartFile file,
             @PathVariable Integer videoId)
@@ -33,7 +33,7 @@ public class VideoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(iVideoUseCase.uploadVideo(file, videoId));
     }
 
-    @PutMapping("/publish/{videoId}")
+    @PutMapping("/{videoId}/publish")
     public ResponseEntity<Void> publishVideo(@PathVariable Integer videoId) {
         iVideoUseCase.publishVideo(videoId);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -52,6 +52,12 @@ public class VideoController {
     @GetMapping("/creator/{creatorId}")
     public ResponseEntity<Iterable<VideoDTO>> getVideosByCreator(@PathVariable Integer creatorId) {
         return ResponseEntity.status(HttpStatus.OK).body(iVideoUseCase.getAllVideosByCreatorId(creatorId));
+    }
+
+    @PutMapping("/{videoId}/like/{creatorId}")
+    public ResponseEntity<Void> likeVideo(@PathVariable Integer creatorId, @PathVariable Integer videoId) {
+        iVideoUseCase.likeVideo(creatorId, videoId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{videoId}")
