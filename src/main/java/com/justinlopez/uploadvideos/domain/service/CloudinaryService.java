@@ -35,9 +35,9 @@ public class CloudinaryService implements ICloudinaryService {
     public Map delete(String id) {
         ApiResponse apiResponse;
         try {
-            apiResponse = cloudinary.api().deleteResources(Arrays.asList(id), ObjectUtils.asMap(
+            apiResponse = cloudinary.api().deleteResources(Arrays.asList("upload-videos/" + id), ObjectUtils.asMap(
                     "type", "upload",
-                    "resource_type", "video"));
+                    "resource_type", "auto"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
